@@ -4,6 +4,7 @@
 
 #ifndef EX3_HEALTHPOINTS_H
 #define EX3_HEALTHPOINTS_H
+#include <ostream>
 
 class HealthPoints {
     int m_maxHP;
@@ -15,23 +16,25 @@ public:
 
     HealthPoints &operator+=(int HPtoAdd);
 
-    HealthPoints &operator+(int HPtoAdd);
+    HealthPoints operator+(int HPtoAdd);
 
-    HealthPoints &operator-(int HPtoRemove);
+    HealthPoints operator-(int HPtoRemove);
 
-    friend bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2) const;
+    friend bool operator<(const HealthPoints &hp1, const HealthPoints &hp2);
 
-    friend bool operator>(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    friend bool operator==(const HealthPoints &hp1, const HealthPoints &hp2);
 
-    friend bool operator<=(const HealthPoints& hp1, const HealthPoints& hp2) const;
+    friend std::ostream& operator<<(std::ostream&, const HealthPoints&);
+};
 
-    friend bool operator<(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2);
 
-    friend bool operator==(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    bool operator>(const HealthPoints &hp1, const HealthPoints &hp2);
 
-    friend bool operator!=(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    bool operator<=(const HealthPoints &hp1, const HealthPoints &hp2);
 
-    friend ostream& operator<<(ostream&, const HealthPoints&);
-}
+    bool operator!=(const HealthPoints &hp1, const HealthPoints &hp2);
+
+
 
 #endif //EX3_HEALTHPOINTS_H
