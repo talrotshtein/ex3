@@ -19,17 +19,17 @@ public:
 
     HealthPoints &operator-(int HPtoRemove);
 
-    bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2) const;
+    friend bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2) const;
 
-    bool operator>(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    friend bool operator>(const HealthPoints& hp1 , const HealthPoints& hp2) const;
 
-    bool operator<=(const HealthPoints& hp1, const HealthPoints& hp2) const;
+    friend bool operator<=(const HealthPoints& hp1, const HealthPoints& hp2) const;
 
-    bool operator<(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    friend bool operator<(const HealthPoints& hp1 , const HealthPoints& hp2) const;
 
-    bool operator==(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    friend bool operator==(const HealthPoints& hp1 , const HealthPoints& hp2) const;
 
-    bool operator!=(const HealthPoints& hp1 , const HealthPoints& hp2) const;
+    friend bool operator!=(const HealthPoints& hp1 , const HealthPoints& hp2) const;
 
     friend ostream& operator<<(ostream&, const HealthPoints&);
 }
