@@ -31,31 +31,47 @@ HealthPoints& HealthPoints::operator+=(int HPtoAdd)
     if (this->m_HP + HPtoAdd > this->m_maxHP)
     {
         this->m_HP = this->m_maxHP;
-        return HealthPoints;
+        return *this;
     }
     else if (this->m_HP + HPtoAdd <=0)
     {
         this->m_HP = 0;
-        return HealthPoints;
+        return *this;
     }
     this->m_HP = this->m_HP + HPtoAdd;
-    return HealthPoints;
+    return *this;
 }
 
-HealthPoints& HealthPoints::operator-(HealthPoints& currentHp , int HpToRemove)
+HealthPoints& HealthPoints::operator+(int HPToAdd)
 {
-    if (currentHp->m_HP - HPtoRemove > currentHp->m_maxHP)
+    if (this->m_HP + HPToAdd > this->m_maxHP)
     {
-        currentHp->m_HP = currentHp->m_maxHP;
-        return currentHp;
+        this->m_HP = this->m_maxHP;
+        return *this;
     }
-    else if (currentHp->m_HP - HPtoRemove <=0)
+    else if (this->m_HP + HPToAdd <= 0)
     {
-        currentHp->m_HP = 0;
-        return currentHp;
+        this->m_HP = 0;
+        return *this;
     }
-    currentHp->m_HP = currentHp->m_HP - HPtoRemove;
-    return currentHp;
+    this->m_HP = this->m_HP + HPToAdd;
+    return *this;
+}
+
+HealthPoints& HealthPoints::operator-(int HPToRemove)
+{
+    if (this->m_HP - HPToRemove > this->m_maxHP)
+    {
+        this->m_HP = this->m_maxHP;
+        return *this;
+    }
+    else if (this->m_HP - HPToRemove <= 0)
+    {
+        this->m_HP = 0;
+        return *this;
+    }
+    this->m_HP = this->m_HP - HPToRemove;
+    return *this;
 }
 
 HealthPoints& HealthPoints::operator-=(int HPtoRemove)
@@ -63,15 +79,15 @@ HealthPoints& HealthPoints::operator-=(int HPtoRemove)
     if (this->m_HP - HPtoRemove > this->m_maxHP)
     {
         this->m_HP = this->m_maxHP;
-        return HealthPoints;
+        return *this;
     }
     else if (this->m_HP - HPtoRemove <=0)
     {
         this->m_HP = 0;
-        return HealthPoints;
+        return *this;
     }
     this->m_HP = this->m_HP - HPtoRemove;
-    return HealthPoints;
+    return *this;
 }
 
 bool operator==(const HealthPoints& hp1, const HealthPoints& hp2){

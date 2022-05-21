@@ -20,9 +20,9 @@ public:
 
     HealthPoints &operator+=(int HPtoAdd);
 
-    HealthPoints operator+(int HPtoAdd);
+    HealthPoints& operator+(int HPtoAdd);
 
-    HealthPoints operator-(HealthPoints& currentHp , int HpToRemove);
+    HealthPoints& operator-(int HpToRemove);
 
     friend bool operator<(const HealthPoints &hp1, const HealthPoints &hp2);
 
