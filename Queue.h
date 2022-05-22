@@ -11,6 +11,8 @@ class Queue{
     Queue* m_next;
 public:
     Queue();
+    Queue(const Queue<T>&);
+    Queue& operator=(const Queue<T>&);
     void pushBack(const T& t);
     const T& front() const;
     void popFront();
@@ -52,6 +54,13 @@ Queue<T>::Queue() {
     this->m_next = nullptr;
     this->m_data = nullptr;
 }
+
+template <class T>
+Queue<T>::Queue(const Queue<T> &){
+
+}
+
+
 
 template <class T>
 void Queue<T>::pushBack(const T &t) {
