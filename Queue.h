@@ -9,13 +9,14 @@ template <class T>
 class Queue{
     T m_data;
     Queue* m_next;
+    int m_length;
 public:
     Queue();
     Queue(const Queue<T>&);
     Queue& operator=(const Queue<T>&);
     ~Queue();
     void pushBack(const T& t);
-    const T& front() const;
+    T& front();
     void popFront();
     int size() const;
     class Iterator;
@@ -53,36 +54,33 @@ void transform(Queue<T>(), Transformer t);
 template <class T>
 Queue<T>::Queue() {
     this->m_next = nullptr;
-    this->m_data = nullptr;
+    this->m_length = 0;
 }
 
 template <class T>
 Queue<T>::Queue(const Queue<T> &t){
-    try{
         this->m_data = t.m_data;
-        if(t.size() == 1)
+        this->m_length = t.m_length;
+        if(t.size() == 1 || t.size() == 0)
         {
             this->m_next = nullptr;
             return;
         }
-        Queue<T> newNode = new Queue<T>();
+        Queue<T> newNode = *(new Queue<T>());
         this->m_next = &newNode;
-        Queue<T> tempSource = t.m_next, tempAdded = this->m_next;
-        for (int i = 0; i < this->size()-1 && tempSource != nullptr; ++i) {
-            tempAdded.m_data = tempSource.m_data;
-            if(tempSource.m_next == nullptr)
+        Queue<T> *tempSource = t.m_next;//changed syntax
+        Queue<T> *tempAdded = this->m_next;
+        for (int i = 0; i < this->size()-1; ++i) {
+            tempAdded->m_data = tempSource->m_data;
+            if(tempSource->m_next == nullptr)
             {
-                tempAdded.m_next = nullptr;
+                tempAdded->m_next = nullptr;
                 return;
             }
-            newNode = new Queue<T>();
-            tempAdded.m_next = &newNode;
-            tempAdded = tempAdded.m_next;
-            tempSource = tempSource.m_next;
-        }
-    }
-    catch(){
-
+            newNode = *(new Queue<T>());
+            tempAdded->m_next = &newNode;
+            tempAdded = tempAdded->m_next;
+            tempSource = tempSource->m_next;
     }
 }
 
@@ -93,76 +91,103 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
     }
     if(this->size() >= t.size())
     {
-        Queue<T> tempThis = this, tempSource=t;
-        for (int i = 0; i < t->size(); ++i) {
+        this->m_length = t.m_length;
+        Queue<T> tempThis = *this, tempSource=t;
+        for (int i = 0; i < t.size(); ++i) {
             tempThis.m_data = tempSource.m_data;
-            tempSource = tempSource.m_next;
-            tempThis = tempThis.m_next;
+            tempSource = *tempSource.m_next;
+            if(i != t.size()-1){
+                tempThis = *tempThis.m_next;
+            }
         }
-        delete tempThis;
+        //Queue<T> toDelete = *tempThis.m_next;
+        while (tempThis.m_next != nullptr)
+        {
+            tempThis.m_next->popFront();
+        }
+        delete tempThis.m_next;
         return *this;
     }
     if(this->size() < t.size())
     {
-        Queue<T> tempThis = this, tempSource=t;
+        Queue<T> tempThis = *this, tempSource=t;
         for (int i = 0; i < this->size(); ++i) {
             tempThis.m_data = tempSource.m_data;
-            tempSource = tempSource.m_next;
+            tempSource = *tempSource.m_next;
             if(tempThis.m_next != nullptr){
-                tempThis = tempThis.m_next;
+                tempThis = *tempThis.m_next;
             }
         }
         Queue<T> newNode(tempSource);
         tempThis.m_next = &newNode;
     }
+    return *this;
 }
 
 template <class T>
 Queue<T>::~Queue<T>() {
-    delete this->m_data;
-    if(this->m_next != nullptr)
+    while(this->m_next != nullptr)
     {
-        delete *this->m_next;
+        this->popFront();
     }
 }
 
 template <class T>
 void Queue<T>::pushBack(const T& t)
 {
-    Queue<T> tmp = this;
-    Queue<T> newNode = new Queue<T>;
-    while (tmp.m_next != nullptr)
+    if(this->m_length == 0)
     {
-        tmp = tmp.m_next;
+        this->m_data = t;
+        this->m_length++;
+        return;
     }
-    tmp.m_next = &newNode;
+    Queue<T>* temp = this;
+    Queue<T> newNode = *(new Queue<T>);
+    while (temp->m_next != nullptr)
+    {
+        temp = temp->m_next;
+    }
+    temp->m_next = &newNode;
     newNode.m_data = t;
     newNode.m_next = nullptr;
+    this->m_length++;
 }
 
 template <class T>
-const T& Queue<T>::front() const
+T& Queue<T>::front()
 {
+    if(this->m_length==0)
+    {
+        //throw
+    }
     return this->m_data;
 }
 
 template <class T>
 void Queue<T>::popFront()
 {
-    if(this->size()==0)
+    if(this->m_length==0)
     {
+        return;//add throw
+    }
+    if(this->m_length==1)
+    {
+        this->m_length = 0;
+        this->m_next = nullptr;
         return;
     }
-    Queue<T> tmp = this->m_next;
-    this->m_data = tmp.m_data;
-    this->m_next = tmp.m_next;
-    tmp.m_next = nullptr;
-    delete tmp;
+    //Queue<T> tmp = *this->m_next;
+    this->m_data = this->m_next->m_data;
+    this->m_next = this->m_next->m_next;
+    this->m_length--;
+    delete this->m_next;
 }
 
 template <class T>
 int Queue<T>::size() const
 {
+    return this->m_length;
+    /*
     int counter = 0;
     Queue<T> tmp = this;
     if(tmp.m_data!= nullptr)
@@ -175,6 +200,7 @@ int Queue<T>::size() const
         counter++;
     }
     return counter;
+     */
 }
 
 
