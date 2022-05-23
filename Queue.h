@@ -66,8 +66,8 @@ Queue<T>::Queue(const Queue<T> &t){
             this->m_next = nullptr;
             return;
         }
-        Queue<T> newNode = *(new Queue<T>());
-        this->m_next = &newNode;
+        Queue<T>* newNode = new Queue<T>();
+        this->m_next = newNode;
         Queue<T> *tempSource = t.m_next;//changed syntax
         Queue<T> *tempAdded = this->m_next;
         for (int i = 0; i < this->size()-1; ++i) {
@@ -77,8 +77,8 @@ Queue<T>::Queue(const Queue<T> &t){
                 tempAdded->m_next = nullptr;
                 return;
             }
-            newNode = *(new Queue<T>());
-            tempAdded->m_next = &newNode;
+            newNode = new Queue<T>();
+            tempAdded->m_next = newNode;
             tempAdded = tempAdded->m_next;
             tempSource = tempSource->m_next;
     }
@@ -92,20 +92,20 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
     if(this->size() >= t.size())
     {
         this->m_length = t.m_length;
-        Queue<T> tempThis = *this, tempSource=t;
+        Queue<T>* tempThis = this, tempSource=t;
         for (int i = 0; i < t.size(); ++i) {
-            tempThis.m_data = tempSource.m_data;
+            tempThis->m_data = tempSource.m_data;
             tempSource = *tempSource.m_next;
             if(i != t.size()-1){
-                tempThis = *tempThis.m_next;
+                tempThis = *tempThis->m_next;
             }
         }
         //Queue<T> toDelete = *tempThis.m_next;
-        while (tempThis.m_next != nullptr)
+        while (tempThis->m_next != nullptr)
         {
-            tempThis.m_next->popFront();
+            tempThis->m_next->popFront();
         }
-        delete tempThis.m_next;
+        delete tempThis->m_next;
         return *this;
     }
     if(this->size() < t.size())
@@ -126,9 +126,9 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
 
 template <class T>
 Queue<T>::~Queue<T>() {
-    while(this->m_next != nullptr)
+    if(this->m_next != nullptr)
     {
-        this->popFront();
+        delete this->m_next;
     }
 }
 
@@ -142,14 +142,14 @@ void Queue<T>::pushBack(const T& t)
         return;
     }
     Queue<T>* temp = this;
-    Queue<T> newNode = *(new Queue<T>);
+    Queue<T> *newNode = (new Queue<T>);//changed syntax (*)
     while (temp->m_next != nullptr)
     {
         temp = temp->m_next;
     }
-    temp->m_next = &newNode;
-    newNode.m_data = t;
-    newNode.m_next = nullptr;
+    temp->m_next = newNode;
+    newNode->m_data = t;
+    newNode->m_next = nullptr;
     this->m_length++;
 }
 
