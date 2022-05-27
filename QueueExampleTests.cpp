@@ -107,7 +107,6 @@ bool testConstQueue()
 	for (Queue<int>::ConstIterator i = constQueue.begin(); i != constQueue.end(); ++i) {
 		AGREGATE_TEST_RESULT(testResult, (*i == 42));
 	}
-    /*
 	bool exceptionThrown = false;
 	Queue<int>::ConstIterator endConstIterator = constQueue.end();
 	try {
@@ -116,8 +115,7 @@ bool testConstQueue()
 	catch (Queue<int>::ConstIterator::InvalidOperation& e) {
 		exceptionThrown = true;
 	}
-    */
-	//AGREGATE_TEST_RESULT(testResult, exceptionThrown);
+	AGREGATE_TEST_RESULT(testResult, exceptionThrown);
 
 	return testResult;
 }
