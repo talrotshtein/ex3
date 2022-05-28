@@ -10,7 +10,7 @@
 template <class T>
 class Queue{
     T m_data;
-    Queue* m_next;
+    Queue<T>* m_next;
     int m_length;
 public:
     Queue();
@@ -148,7 +148,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
 
 template <class T>
 Queue<T>::~Queue<T>() {
-    if(this->m_next != nullptr)
+    if(this != nullptr)//changed this.next to only this
     {
         delete this->m_next;
     }
@@ -164,7 +164,7 @@ void Queue<T>::pushBack(const T& t)
         return;
     }
     Queue<T>* temp = this;
-    Queue<T> *newNode = new Queue<T>;
+    Queue<T>* newNode = new Queue<T>;
     while (temp->m_next != nullptr)
     {
         temp = temp->m_next;
@@ -215,7 +215,7 @@ int Queue<T>::size() const
 template<class T, class Condition>
 Queue<T> filter(const Queue<T>& queue, Condition c)
 {
-    Queue<T>* newQueue = new Queue<T>;
+    Queue<T>* newQueue = new Queue<T>();
     if(queue.size() == 0)
     {
         return *newQueue;
@@ -292,23 +292,11 @@ bool Queue<T>::ConstIterator::operator!=(const ConstIterator& constIterator) con
 
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::begin() const {
-    /*
-    if(this->size() == 0)
-    {
-        throw EmptyQueue();
-    }
-     */
     return ConstIterator(this, 0);
 }
 
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::end() const {
-    /*
-    if(this->size() == 0)
-    {
-        throw EmptyQueue();
-    }
-     */
     return ConstIterator(this, this->size());
 }
 
@@ -365,23 +353,11 @@ bool Queue<T>::Iterator::operator!=(const Iterator& iterator) {
 
 template <class T>
 typename Queue<T>::Iterator Queue<T>::begin() {
-    /*
-    if(this->size() == 0)
-    {
-        throw EmptyQueue();
-    }
-     */
     return Iterator(this, 0);
 }
 
 template <class T>
 typename Queue<T>::Iterator Queue<T>::end() {
-    /*
-    if(this->size() == 0)
-    {
-        throw EmptyQueue();
-    }
-     */
     return Iterator(this, this->size());
 }
 

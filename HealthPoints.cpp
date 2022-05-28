@@ -42,20 +42,14 @@ HealthPoints& HealthPoints::operator+=(int HPtoAdd)
     return *this;
 }
 
-HealthPoints& HealthPoints::operator+(int HPToAdd)
-{
-    if (this->m_HP + HPToAdd > this->m_maxHP)
-    {
-        this->m_HP = this->m_maxHP;
-        return *this;
-    }
-    else if (this->m_HP + HPToAdd <= 0)
-    {
-        this->m_HP = 0;
-        return *this;
-    }
-    this->m_HP = this->m_HP + HPToAdd;
-    return *this;
+HealthPoints& operator+(HealthPoints& hp, int HPToAdd){
+    hp+=HPToAdd;
+    return hp;
+}
+
+HealthPoints& operator+(int HPToAdd, HealthPoints& hp) {
+    hp+=HPToAdd;
+    return hp;
 }
 
 HealthPoints& HealthPoints::operator-(int HPToRemove)
