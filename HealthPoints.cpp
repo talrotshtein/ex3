@@ -42,9 +42,9 @@ HealthPoints& HealthPoints::operator+=(int HPtoAdd)
     return *this;
 }
 
-HealthPoints& operator+(HealthPoints& hp, int HPToAdd){
-    hp+=HPToAdd;
-    return hp;
+HealthPoints& HealthPoints::operator+(int HPToAdd){
+    this->operator+=(HPToAdd);
+    return *this;
 }
 
 HealthPoints& operator+(int HPToAdd, HealthPoints& hp) {

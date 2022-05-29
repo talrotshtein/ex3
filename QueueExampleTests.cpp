@@ -37,6 +37,11 @@ bool testQueueMethods()
 	int size1 = queue1.size();
 	AGREGATE_TEST_RESULT(testResult, size1 == 1);
 
+    Queue<int> testQueue, testQueue2;//our edition
+    for (int i = 1; i <= 5; i++) {
+        testQueue.pushBack(i);
+    }
+    testQueue2 = testQueue;
 	return testResult;
 }
 

@@ -16,6 +16,8 @@ public:
 
     HealthPoints& operator=(const HealthPoints&);
 
+    HealthPoints& operator+(int HPtoAdd);
+
     HealthPoints &operator-=(int HPtoRemove);
 
     HealthPoints &operator+=(int HPtoAdd);
@@ -31,8 +33,6 @@ public:
     class InvalidArgument {};
 
 };
-
-    HealthPoints& operator+(HealthPoints& hp,int HPtoAdd);
 
     HealthPoints& operator+(int HPtoAdd, HealthPoints& hp);
 

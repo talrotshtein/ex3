@@ -18,7 +18,8 @@ public:
     Queue& operator=(const Queue<T>&);
     ~Queue();
     void pushBack(const T& t);
-    T& front();
+    T& front();//changed return type to non reference
+    const T& front() const;
     void popFront();
     int size() const;
     class Iterator;
@@ -119,7 +120,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
             tempThis->m_data = tempSource.m_data;
             tempSource = *tempSource.m_next;
             if(i != t.size()-1){
-                tempThis = *tempThis->m_next;
+                tempThis = tempThis->m_next;
             }
         }
         //Queue<T> toDelete = *tempThis.m_next;
@@ -132,16 +133,17 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
     }
     if(this->size() < t.size())
     {
-        Queue<T> tempThis = *this, tempSource=t;
+        Queue<T>* tempThis = this;
+        Queue<T> tempSource=t;
         for (int i = 0; i < this->size(); ++i) {
-            tempThis.m_data = tempSource.m_data;
+            tempThis->m_data = tempSource.m_data;
             tempSource = *tempSource.m_next;
-            if(tempThis.m_next != nullptr){
-                tempThis = *tempThis.m_next;
+            if(tempThis->m_next != nullptr){
+                tempThis = tempThis->m_next;
             }
         }
         Queue<T> newNode(tempSource);
-        tempThis.m_next = &newNode;
+        tempThis->m_next = &newNode;
     }
     return *this;
 }
@@ -177,6 +179,16 @@ void Queue<T>::pushBack(const T& t)
 
 template <class T>
 T& Queue<T>::front()
+{
+    if(this->m_length==0)
+    {
+        throw EmptyQueue();
+    }
+    return this->m_data;
+}
+
+template <class T>
+const T& Queue<T>::front() const
 {
     if(this->m_length==0)
     {
@@ -277,7 +289,7 @@ template<class T>
 typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(int) {
     if(this->index == this->queue->size())
     {
-        throw &InvalidOperation();
+        throw InvalidOperation();
     }
     ConstIterator result = *this;
     ++*this;
