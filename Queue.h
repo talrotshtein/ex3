@@ -215,18 +215,18 @@ int Queue<T>::size() const
 template<class T, class Condition>
 Queue<T> filter(const Queue<T>& queue, Condition c)
 {
-    Queue<T>* newQueue = new Queue<T>();
+    Queue<T> newQueue;
     if(queue.size() == 0)
     {
-        return *newQueue;
+        return newQueue;
     }
     for (typename Queue<T>::ConstIterator i = queue.begin(); i != queue.end(); ++i) {
         if(c(*i) == true)
         {
-            newQueue->pushBack(*i);
+            newQueue.pushBack(*i);
         }
     }
-    return *newQueue;
+    return newQueue;
 }
 
 template<class T, class Transformer>
