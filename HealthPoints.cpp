@@ -26,34 +26,40 @@ HealthPoints& HealthPoints::operator=(const HealthPoints& HP) {
     return *this;
 }
 
-HealthPoints& HealthPoints::operator+=(int HPtoAdd)
+HealthPoints& HealthPoints::operator+=(int HPToAdd)
 {
-    if (this->m_HP + HPtoAdd > this->m_maxHP)
+    if (this->m_HP + HPToAdd > this->m_maxHP)
     {
         this->m_HP = this->m_maxHP;
         return *this;
     }
-    else if (this->m_HP + HPtoAdd <=0)
+    else if (this->m_HP + HPToAdd <=0)
     {
         this->m_HP = 0;
         return *this;
     }
-    this->m_HP = this->m_HP + HPtoAdd;
+    this->m_HP = this->m_HP + HPToAdd;
     return *this;
 }
 
-HealthPoints& HealthPoints::operator+(int HPToAdd){
-    this->operator+=(HPToAdd);
-    return *this;
+HealthPoints operator+(const HealthPoints& hp, int HPToAdd){
+    HealthPoints hpToReturn = hp;
+    hpToReturn += HPToAdd;
+    return hpToReturn;
 }
 
-HealthPoints& operator+(int HPToAdd, HealthPoints& hp) {
-    hp+=HPToAdd;
-    return hp;
+HealthPoints operator+(int HPToAdd, const HealthPoints& hp) {
+    HealthPoints hpToReturn = hp;
+    hpToReturn += HPToAdd;
+    return hpToReturn;
 }
 
-HealthPoints& HealthPoints::operator-(int HPToRemove)
+HealthPoints operator-(const HealthPoints& hp, int HPToRemove)
 {
+    HealthPoints hpToReturn = hp;
+    hpToReturn -= HPToRemove;
+    return hpToReturn;
+    /*
     if (this->m_HP - HPToRemove > this->m_maxHP)
     {
         this->m_HP = this->m_maxHP;
@@ -66,21 +72,22 @@ HealthPoints& HealthPoints::operator-(int HPToRemove)
     }
     this->m_HP = this->m_HP - HPToRemove;
     return *this;
+     */
 }
 
-HealthPoints& HealthPoints::operator-=(int HPtoRemove)
+HealthPoints& HealthPoints::operator-=(int HPToRemove)
 {
-    if (this->m_HP - HPtoRemove > this->m_maxHP)
+    if (this->m_HP - HPToRemove > this->m_maxHP)
     {
         this->m_HP = this->m_maxHP;
         return *this;
     }
-    else if (this->m_HP - HPtoRemove <=0)
+    else if (this->m_HP - HPToRemove <=0)
     {
         this->m_HP = 0;
         return *this;
     }
-    this->m_HP = this->m_HP - HPtoRemove;
+    this->m_HP = this->m_HP - HPToRemove;
     return *this;
 }
 

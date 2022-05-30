@@ -6,6 +6,7 @@
 #define EX3_QUEUE_H
 
 #include <cassert>
+#include <iostream>
 
 template <class T>
 class Queue{
@@ -69,7 +70,7 @@ template <class T, class Condition>
 Queue<T> filter(const Queue<T>& queue, Condition c);
 
 template <class T, class Transformer>
-void transform(Queue<T> queue, Transformer t);
+void transform(Queue<T>& queue, Transformer t);
 
 
 /*implementation*/
@@ -82,28 +83,23 @@ Queue<T>::Queue() {
 
 template <class T>
 Queue<T>::Queue(const Queue<T> &t){
-        this->m_data = t.m_data;
-        this->m_length = t.m_length;
-        if(t.size() == 1 || t.size() == 0)
+    this->m_data = t.m_data;
+    this->m_length = 0;
+    this->m_next = nullptr;
+    typename Queue<T>::ConstIterator i = t.begin();
+    ++i;
+    for (i = t.begin(); i != t.end(); ++i) {
+        try
         {
-            this->m_next = nullptr;
-            return;
+            this->pushBack(*i);
         }
-        Queue<T>* newNode = new Queue<T>();
-        this->m_next = newNode;
-        Queue<T> *tempSource = t.m_next;//changed syntax
-        Queue<T> *tempAdded = this->m_next;
-        for (int i = 0; i < this->size()-1; ++i) {
-            tempAdded->m_data = tempSource->m_data;
-            if(tempSource->m_next == nullptr)
-            {
-                tempAdded->m_next = nullptr;
-                return;
+        catch (std::bad_alloc& e)
+        {
+            while (m_next != nullptr) {
+                popFront();
             }
-            newNode = new Queue<T>();
-            tempAdded->m_next = newNode;
-            tempAdded = tempAdded->m_next;
-            tempSource = tempSource->m_next;
+            throw e;
+        }
     }
 }
 
@@ -112,40 +108,30 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
     if(this == &t){
         return *this;
     }
-    if(this->size() >= t.size())
-    {
-        this->m_length = t.m_length;
-        Queue<T>* tempThis = this, tempSource=t;
-        for (int i = 0; i < t.size(); ++i) {
-            tempThis->m_data = tempSource.m_data;
-            tempSource = *tempSource.m_next;
-            if(i != t.size()-1){
-                tempThis = tempThis->m_next;
-            }
-        }
-        //Queue<T> toDelete = *tempThis.m_next;
-        while (tempThis->m_next != nullptr)
-        {
-            tempThis->m_next->popFront();
-        }
-        delete tempThis->m_next;
-        return *this;
+    Queue<T>* newQueue = new Queue<T>();
+    for (typename Queue<T>::ConstIterator i = t.begin(); i != t.end(); ++i) {
+           try{
+               newQueue->pushBack(*i);
+           }
+           catch(std::bad_alloc& e)
+           {
+               while (newQueue->m_next != nullptr) {
+                   newQueue->popFront();
+               }
+               throw e;
+           }
     }
-    if(this->size() < t.size())
+    while (this->m_next != nullptr)
     {
-        Queue<T>* tempThis = this;
-        Queue<T> tempSource=t;
-        for (int i = 0; i < this->size(); ++i) {
-            tempThis->m_data = tempSource.m_data;
-            tempSource = *tempSource.m_next;
-            if(tempThis->m_next != nullptr){
-                tempThis = tempThis->m_next;
-            }
-        }
-        Queue<T> newNode(tempSource);
-        tempThis->m_next = &newNode;
+        this->popFront();
     }
+    this->m_data = newQueue->m_data;
+    this->m_next = newQueue->m_next;
+    this->m_length = t.m_length;
+    newQueue->m_next = nullptr;
+    delete newQueue;
     return *this;
+
 }
 
 template <class T>
@@ -154,6 +140,7 @@ Queue<T>::~Queue<T>() {
     {
         delete this->m_next;
     }
+
 }
 
 template <class T>
@@ -235,14 +222,22 @@ Queue<T> filter(const Queue<T>& queue, Condition c)
     for (typename Queue<T>::ConstIterator i = queue.begin(); i != queue.end(); ++i) {
         if(c(*i) == true)
         {
-            newQueue.pushBack(*i);
+            try {
+                newQueue.pushBack(*i);
+            }
+            catch (std::bad_alloc& e){
+                while (newQueue.size()>0){
+                    newQueue.popFront();
+                }
+                throw e;
+            }
         }
     }
     return newQueue;
 }
 
 template<class T, class Transformer>
-void transform(Queue<T> queue, Transformer t){
+void transform(Queue<T>& queue, Transformer t){
     if(queue.size() == 0)
     {
         return;
@@ -359,8 +354,8 @@ typename Queue<T>::Iterator Queue<T>::Iterator::operator++(int) {
 
 template<class T>
 bool Queue<T>::Iterator::operator!=(const Iterator& iterator) {
-    assert(this->queue == iterator.queue);
-    return this->index == iterator.index;
+    //assert(this->queue == iterator.queue);
+    return this->index != iterator.index;
 }
 
 template <class T>

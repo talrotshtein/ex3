@@ -16,13 +16,9 @@ public:
 
     HealthPoints& operator=(const HealthPoints&);
 
-    HealthPoints& operator+(int HPtoAdd);
-
     HealthPoints &operator-=(int HPtoRemove);
 
     HealthPoints &operator+=(int HPtoAdd);
-
-    HealthPoints& operator-(int HpToRemove);
 
     friend bool operator<(const HealthPoints &hp1, const HealthPoints &hp2);
 
@@ -34,7 +30,11 @@ public:
 
 };
 
-    HealthPoints& operator+(int HPtoAdd, HealthPoints& hp);
+    HealthPoints operator+(const HealthPoints& hp, int HPtoAdd);
+
+    HealthPoints operator+(int HPtoAdd, const HealthPoints& hp);
+
+    HealthPoints operator-(const HealthPoints& hp, int HpToRemove);
 
     bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2);
 

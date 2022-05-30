@@ -54,8 +54,126 @@ bool testArithmaticOperators()
 	healthPoints2 = 160 + healthPoints1; /* now has 100 out of 100 */
 	testResult = testResult && checkHealthPointsValues(healthPoints2, 100, 100);
 
-	return testResult;
+/*
+    std::string result;
 
+    HealthPoints hp1 = 1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "1(1)");
+
+    hp1 += 1;
+    //helperReadHP(hp1, result);
+   // REQUIRE(result == "1(1)");
+
+   // helperReadHP(hp1 + 1, result);
+    //REQUIRE(result == "1(1)");
+
+  //  helperReadHP(1 + hp1, result);
+    //REQUIRE(result == "1(1)");
+
+    HealthPoints hp2 = 80085;
+   // helperReadHP(hp2, result);
+    //REQUIRE(result == "80085(80085)");
+
+    hp2 -= 80000;
+   // helperReadHP(hp2, result);
+   // REQUIRE(result == "85(80085)");
+
+    hp2 -= 80;
+   // helperReadHP(hp2, result);
+    //REQUIRE(result == "5(80085)");
+
+    hp2 -= 80;
+    //helperReadHP(hp2, result);
+   // REQUIRE(result == "0(80085)");
+
+    hp2 -= 1;
+  //  helperReadHP(hp2, result);
+   // REQUIRE(result == "0(80085)");
+
+    hp2 += 1;
+   // helperReadHP(hp2, result);
+   // REQUIRE(result == "1(80085)");
+
+    hp2 += 80;
+   // helperReadHP(hp2, result);
+    //REQUIRE(result == "81(80085)");
+
+    hp2 += 8000;
+   // helperReadHP(hp2, result);
+   // REQUIRE(result == "8081(80085)");
+
+    hp2 += 80000;
+    //helperReadHP(hp2, result);
+    //REQUIRE(result == "80085(80085)");
+
+    hp2 -= 3;
+    //helperReadHP(hp2, result);
+    //REQUIRE(result == "80082(80085)");
+
+    hp2 += 3;
+    //helperReadHP(hp2, result);
+    //REQUIRE(result == "80085(80085)");
+
+    hp2 -= 80085;
+    //helperReadHP(hp2, result);
+    //REQUIRE(result == "0(80085)");
+
+    hp1 = hp2 + 100;
+   // helperReadHP(hp1, result);
+    //REQUIRE(result == "100(80085)");
+
+    hp1 = hp1 - 1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "99(80085)");
+
+    hp1 = hp1 - 1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "98(80085)");
+
+    hp1 = hp1 + 1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "99(80085)");
+
+    hp1 = hp1 + 1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "100(80085)");
+
+    hp1 = 1 + hp1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "101(80085)");
+
+    hp1 = 1 + hp1;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "102(80085)");
+
+    hp1 = hp2 + 90000;
+    //helperReadHP(hp1, result);
+   // REQUIRE(result == "80085(80085)");
+
+    hp1 = 90000 + hp2;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "80085(80085)");
+
+    hp2 = hp1 - 80000;
+    //helperReadHP(hp2, result);
+    //REQUIRE(result == "85(80085)");
+
+    hp1 = hp2 - 90000;
+    //helperReadHP(hp1, result);
+   // REQUIRE(result == "0(80085)");
+
+    hp1 = hp2 + (-2);
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "83(80085)");
+
+    hp1 = (-84) + hp2;
+    //helperReadHP(hp1, result);
+    //REQUIRE(result == "1(80085)");
+
+
+	return testResult;
+*/
 }
 
 bool testComparisonOperators()

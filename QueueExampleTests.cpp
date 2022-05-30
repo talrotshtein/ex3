@@ -1,6 +1,9 @@
 
 #include "Queue.h"
 #include "iostream"
+#include <vector>
+#include "HealthPoints.h"
+#include <string>
 
 #define AGREGATE_TEST_RESULT(res, cond) (res) = ((res) && (cond))
 
@@ -12,6 +15,28 @@ static bool isEven(int n)
 static void setFortyTwo(int& n)
 {
 	n = 42;
+}
+
+
+static bool isPrime(const int n)
+{
+    if (n < 2 || (n % 2 == 0 && n != 2))
+    {
+        return false;
+    }
+    for (int i = 3; i * i <= n; i += 2)
+    {
+        if (n % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+static void setSixtyNine(int& n)
+{
+    n = 69;
 }
 
 namespace QueueTests {
@@ -37,11 +62,6 @@ bool testQueueMethods()
 	int size1 = queue1.size();
 	AGREGATE_TEST_RESULT(testResult, size1 == 1);
 
-    Queue<int> testQueue, testQueue2;//our edition
-    for (int i = 1; i <= 5; i++) {
-        testQueue.pushBack(i);
-    }
-    testQueue2 = testQueue;
 	return testResult;
 }
 
