@@ -5,7 +5,6 @@
 #ifndef EX3_QUEUE_H
 #define EX3_QUEUE_H
 
-#include <cassert>
 #include <iostream>
 
 template <class T>
@@ -87,15 +86,6 @@ Queue<T>::Queue(const Queue<T> &t){
     this->m_next=nullptr;
     this->m_length = 0;
     *this =t;
-    return;
-    this->m_data = t.m_data;
-    this->m_length = 0;
-    this->m_next = nullptr;
-    typename Queue<T>::ConstIterator i = t.begin();
-    for (; i != t.end(); ++i)
-    {
-        this->pushBack(*i);
-    }
 }
 
 template <class T>
@@ -248,7 +238,6 @@ Queue<T>::ConstIterator::ConstIterator(const Queue<T> *queue, int index) {
 
 template<class T>
 const T& Queue<T>::ConstIterator::operator*() const {
-    assert(this->index >= 0 && this->index < this->queue->size());
     if(this->index >= this->queue->size())
     {
         throw InvalidOperation();
@@ -283,7 +272,6 @@ typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(int) {
 
 template<class T>
 bool Queue<T>::ConstIterator::operator!=(const ConstIterator& constIterator) const {
-    //assert(this->queue == constIterator.queue);
     return this->index != constIterator.index;
 }
 
@@ -344,7 +332,6 @@ typename Queue<T>::Iterator Queue<T>::Iterator::operator++(int) {
 
 template<class T>
 bool Queue<T>::Iterator::operator!=(const Iterator& iterator) {
-    //assert(this->queue == iterator.queue);
     return this->index != iterator.index;
 }
 
