@@ -83,23 +83,18 @@ Queue<T>::Queue() {
 
 template <class T>
 Queue<T>::Queue(const Queue<T> &t){
+
+    this->m_next=nullptr;
+    this->m_length = 0;
+    *this =t;
+    return;
     this->m_data = t.m_data;
     this->m_length = 0;
     this->m_next = nullptr;
     typename Queue<T>::ConstIterator i = t.begin();
-    ++i;
-    for (i = t.begin(); i != t.end(); ++i) {
-        try
-        {
-            this->pushBack(*i);
-        }
-        catch (std::bad_alloc& e)
-        {
-            while (m_next != nullptr) {
-                popFront();
-            }
-            throw e;
-        }
+    for (; i != t.end(); ++i)
+    {
+        this->pushBack(*i);
     }
 }
 
@@ -108,40 +103,28 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& t) {
     if(this == &t){
         return *this;
     }
-    Queue<T>* newQueue = new Queue<T>();
+    Queue<T> newQueue;
     for (typename Queue<T>::ConstIterator i = t.begin(); i != t.end(); ++i) {
-           try{
-               newQueue->pushBack(*i);
-           }
-           catch(std::bad_alloc& e)
-           {
-               while (newQueue->m_next != nullptr) {
-                   newQueue->popFront();
-               }
-               throw e;
-           }
+        newQueue.pushBack(*i);
     }
     while (this->m_next != nullptr)
     {
         this->popFront();
     }
-    this->m_data = newQueue->m_data;
-    this->m_next = newQueue->m_next;
-    this->m_length = t.m_length;
-    newQueue->m_next = nullptr;
-    delete newQueue;
+    this->m_data = newQueue.m_data;
+    this->m_next = newQueue.m_next;
+    this->m_length = newQueue.m_length;
+    newQueue.m_next = nullptr;
     return *this;
-
 }
 
 template <class T>
 Queue<T>::~Queue<T>() {
-    if(this != nullptr)//changed this.next to only this
-    {
-        delete this->m_next;
-    }
+    delete this->m_next;
+    this->m_next = nullptr;
 
 }
+
 
 template <class T>
 void Queue<T>::pushBack(const T& t)
@@ -153,15 +136,22 @@ void Queue<T>::pushBack(const T& t)
         return;
     }
     Queue<T>* temp = this;
-    Queue<T>* newNode = new Queue<T>;
+    Queue<T>* newNode=  new Queue;
     while (temp->m_next != nullptr)
     {
         temp = temp->m_next;
     }
+    try
+    {
+        newNode->m_data = t;
+    }
+    catch(std::bad_alloc e){
+        delete newNode;
+        throw e;
+    };
     temp->m_next = newNode;
-    newNode->m_data = t;
-    newNode->m_next = nullptr;
     this->m_length++;
+
 }
 
 template <class T>
@@ -259,7 +249,7 @@ Queue<T>::ConstIterator::ConstIterator(const Queue<T> *queue, int index) {
 template<class T>
 const T& Queue<T>::ConstIterator::operator*() const {
     assert(this->index >= 0 && this->index < this->queue->size());
-    if(this->index == this->queue->size())
+    if(this->index >= this->queue->size())
     {
         throw InvalidOperation();
     }
